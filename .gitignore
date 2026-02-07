@@ -94,8 +94,10 @@ htmlcov/
 # Documentation builds
 docs/_build/
 site/
+DOCS_ORGANIZATION_PLAN.md
 
 # Temporary files
+organize_docs.sh
 *.tmp
 *.bak
 *.swp

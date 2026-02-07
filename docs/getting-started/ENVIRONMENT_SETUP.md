@@ -125,16 +125,67 @@ After adding the hook, restart your shell or run:
 source ~/.bashrc  # or ~/.zshrc
 ```
 
+## What the .envrc File Does
+
+The `.envrc` file automatically executes when you enter the directory:
+
+```bash
+# Automatically activate virtual environment
+source venv/bin/activate
+
+# Set the project root
+export PROJECT_ROOT="$PWD"
+
+# Add the project to PYTHONPATH
+export PYTHONPATH="$PWD:$PYTHONPATH"
+
+# Optional development environment variables
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+export PYTHONUNBUFFERED=1
+
+# Display welcome message
+echo "✅ Medical Imaging Framework environment activated"
+echo "📁 Project root: $PROJECT_ROOT"
+echo "🐍 Python: $(python --version)"
+echo "📦 Virtual env: venv/"
+```
+
 ## Environment Variables
 
-The `.envrc` file sets these variables:
+The following environment variables are automatically set:
 
 | Variable | Value | Purpose |
 |----------|-------|---------|
+| `VIRTUAL_ENV` | Path to venv | Virtual environment path |
 | `PROJECT_ROOT` | Current directory | Project root path |
 | `PYTHONPATH` | `$PWD:$PYTHONPATH` | Python module search path |
 | `PYTORCH_CUDA_ALLOC_CONF` | `max_split_size_mb:512` | CUDA memory allocation |
 | `PYTHONUNBUFFERED` | `1` | Immediate output flushing |
+| `PATH` | Modified to use venv | Uses venv Python binaries |
+
+## Benefits of Automatic Activation
+
+Using direnv provides several advantages:
+
+- ✅ **No manual activation needed** - Environment activates automatically
+- ✅ **Consistent environment** - Same setup across all terminal sessions
+- ✅ **Automatic deactivation** - Cleans up when you leave the directory
+- ✅ **Project-specific Python** - Uses correct Python and packages
+- ✅ **Proper PYTHONPATH** - Enables correct module imports
+- ✅ **Development ready** - All variables set for immediate work
+
+## Verification Checklist
+
+Use this checklist to verify your environment is properly configured:
+
+- [ ] direnv installed (`which direnv` shows path)
+- [ ] direnv hook in `~/.bashrc` or `~/.zshrc`
+- [ ] `.envrc` file exists at project root
+- [ ] `.envrc` is allowed (`direnv allow` completed)
+- [ ] `venv/` directory exists with Python packages
+- [ ] Automatic activation works (see welcome message)
+- [ ] Environment variables set correctly (`echo $PROJECT_ROOT`)
+- [ ] Framework imports work (`python -c "import medical_imaging_framework"`)
 
 ## Troubleshooting
 
@@ -152,10 +203,29 @@ The `.envrc` file sets these variables:
 
 3. Check if shell hook is configured:
    ```bash
-   echo $DIRENV_DIR
+   grep direnv ~/.bashrc  # For bash
+   grep direnv ~/.zshrc   # For zsh
+   ```
+   Should show: `eval "$(direnv hook bash)"`
+
+4. Check direnv status:
+   ```bash
+   direnv status
    ```
 
-### Permission denied on .envrc?
+5. Reload your shell:
+   ```bash
+   exec bash
+   # or
+   source ~/.bashrc
+   ```
+
+### Permission denied or .envrc is blocked?
+
+If you see "direnv: error .envrc is blocked":
+```bash
+direnv allow
+```
 
 Make sure the file has correct permissions:
 ```bash
@@ -217,14 +287,28 @@ Your environment is configured for **automatic activation** via direnv:
 1. ✅ Enter directory → Environment activates automatically
 2. ✅ Exit directory → Environment deactivates automatically
 3. ✅ No manual activation needed!
+4. ✅ All environment variables set correctly
+5. ✅ Ready for development immediately
 
-Alternatively, use:
-- `source activate.sh` - Manual activation
-- `source venv/bin/activate` - Standard Python venv
+**Alternative Activation Methods:**
+- `source activate.sh` - Manual activation script
+- `source venv/bin/activate` - Standard Python venv activation
+- `./venv/bin/python script.py` - One-time command execution
+
+**Quick Verification:**
+```bash
+cd /path/to/medical_imaging_framework  # Auto-activates
+echo $PROJECT_ROOT                      # Should show project path
+which python                            # Should show venv/bin/python
+python examples/simple_test.py          # Should pass all tests
+```
 
 ---
 
 **Next Steps:**
 - Read [GETTING_STARTED.md](GETTING_STARTED.md) for framework usage
-- Check [README.md](README.md) for complete documentation
+- Check [../README.md](../README.md) for complete documentation
 - Run `python examples/simple_test.py` to verify everything works
+- See [SERVER_SETUP.md](SERVER_SETUP.md) for server deployment
+
+**Last Updated:** February 7, 2026
