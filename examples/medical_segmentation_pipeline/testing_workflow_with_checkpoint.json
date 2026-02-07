@@ -1,0 +1,142 @@
+{
+  "name": "Medical Segmentation Testing (with Trained Model)",
+  "nodes": [
+    {
+      "type": "MedicalSegmentationLoader",
+      "name": "data_loader",
+      "position": [50, 100],
+      "config": {
+        "data_dir": "examples/medical_segmentation_pipeline/data",
+        "batch_size": "8",
+        "num_workers": "0",
+        "shuffle_train": "False"
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "UNet2D",
+      "name": "unet_model",
+      "position": [50, 300],
+      "config": {
+        "in_channels": 1,
+        "out_channels": 2,
+        "base_channels": 32,
+        "depth": 3
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "CheckpointLoader",
+      "name": "checkpoint_loader",
+      "position": [250, 300],
+      "config": {
+        "checkpoint_path": "examples/medical_segmentation_pipeline/checkpoints/best_model.pt"
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "BatchPredictor",
+      "name": "predictor",
+      "position": [550, 250],
+      "config": {
+        "device": "cuda"
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "MetricsCalculator",
+      "name": "metrics",
+      "position": [850, 250],
+      "config": {
+        "task_type": "segmentation",
+        "num_classes": 2
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "SegmentationOverlay",
+      "name": "visualization",
+      "position": [850, 450],
+      "config": {
+        "output_dir": "examples/medical_segmentation_pipeline/visualization_output",
+        "max_images": "10",
+        "alpha": "0.4",
+        "save_individual": "True",
+        "save_grid": "True"
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "Print",
+      "name": "print_results",
+      "position": [1150, 250],
+      "config": {
+        "message": "Test Results"
+      },
+      "is_composite": false,
+      "collapsed": false
+    }
+  ],
+  "links": [
+    {
+      "source_node": "data_loader",
+      "source_port": "test_loader",
+      "target_node": "predictor",
+      "target_port": "dataloader"
+    },
+    {
+      "source_node": "unet_model",
+      "source_port": "model",
+      "target_node": "checkpoint_loader",
+      "target_port": "model"
+    },
+    {
+      "source_node": "checkpoint_loader",
+      "source_port": "model",
+      "target_node": "predictor",
+      "target_port": "model"
+    },
+    {
+      "source_node": "predictor",
+      "source_port": "all_predictions",
+      "target_node": "metrics",
+      "target_port": "predictions"
+    },
+    {
+      "source_node": "predictor",
+      "source_port": "all_labels",
+      "target_node": "metrics",
+      "target_port": "labels"
+    },
+    {
+      "source_node": "metrics",
+      "source_port": "metrics",
+      "target_node": "print_results",
+      "target_port": "input"
+    },
+    {
+      "source_node": "predictor",
+      "source_port": "all_images",
+      "target_node": "visualization",
+      "target_port": "images"
+    },
+    {
+      "source_node": "predictor",
+      "source_port": "all_labels",
+      "target_node": "visualization",
+      "target_port": "labels"
+    },
+    {
+      "source_node": "predictor",
+      "source_port": "all_predictions",
+      "target_node": "visualization",
+      "target_port": "predictions"
+    }
+  ]
+}

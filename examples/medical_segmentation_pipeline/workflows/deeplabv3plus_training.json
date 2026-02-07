@@ -1,0 +1,101 @@
+{
+  "name": "DeepLabV3+ Training",
+  "description": "Multi-scale segmentation using ASPP and encoder-decoder architecture",
+  "nodes": [
+    {
+      "type": "MedicalSegmentationLoader",
+      "name": "data_loader",
+      "config": {
+        "data_dir": "data/medical_segmentation",
+        "batch_size": "4",
+        "image_size": "256",
+        "num_workers": "4"
+      },
+      "position": {
+        "x": 50,
+        "y": 100
+      }
+    },
+    {
+      "type": "DeepLabV3Plus",
+      "name": "deeplabv3plus_model",
+      "config": {
+        "in_channels": "1",
+        "num_classes": "2"
+      },
+      "position": {
+        "x": 50,
+        "y": 250
+      }
+    },
+    {
+      "type": "LossFunction",
+      "name": "ce_loss",
+      "config": {
+        "loss_type": "cross_entropy"
+      },
+      "position": {
+        "x": 50,
+        "y": 400
+      }
+    },
+    {
+      "type": "Optimizer",
+      "name": "sgd_optimizer",
+      "config": {
+        "optimizer_type": "SGD",
+        "learning_rate": "0.01",
+        "momentum": "0.9",
+        "weight_decay": "0.0001"
+      },
+      "position": {
+        "x": 300,
+        "y": 250
+      }
+    },
+    {
+      "type": "Trainer",
+      "name": "trainer",
+      "config": {
+        "epochs": "100",
+        "device": "cuda"
+      },
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    }
+  ],
+  "links": [
+    {
+      "source_node": "data_loader",
+      "source_port": "train_loader",
+      "target_node": "trainer",
+      "target_port": "dataloader"
+    },
+    {
+      "source_node": "deeplabv3plus_model",
+      "source_port": "model",
+      "target_node": "trainer",
+      "target_port": "model"
+    },
+    {
+      "source_node": "ce_loss",
+      "source_port": "loss_fn",
+      "target_node": "trainer",
+      "target_port": "loss_fn"
+    },
+    {
+      "source_node": "deeplabv3plus_model",
+      "source_port": "model",
+      "target_node": "sgd_optimizer",
+      "target_port": "model"
+    },
+    {
+      "source_node": "sgd_optimizer",
+      "source_port": "optimizer",
+      "target_node": "trainer",
+      "target_port": "optimizer"
+    }
+  ]
+}

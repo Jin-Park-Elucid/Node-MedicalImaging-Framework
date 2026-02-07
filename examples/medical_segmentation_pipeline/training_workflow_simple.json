@@ -1,0 +1,51 @@
+{
+  "name": "Medical Segmentation Training",
+  "nodes": [
+    {
+      "type": "MedicalSegmentationLoaderNode",
+      "name": "data_loader",
+      "position": [
+        100,
+        200
+      ],
+      "config": {
+        "data_dir": "examples/medical_segmentation_pipeline/data",
+        "batch_size": "4",
+        "num_workers": "0",
+        "shuffle_train": "True"
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "UNet2DNode",
+      "name": "unet_model",
+      "position": [
+        100,
+        400
+      ],
+      "config": {
+        "in_channels": 1,
+        "out_channels": 2,
+        "base_channels": 32,
+        "depth": 3
+      },
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "LossFunctionNode",
+      "name": "loss_function",
+      "position": [
+        100,
+        600
+      ],
+      "config": {
+        "loss_type": "dice"
+      },
+      "is_composite": false,
+      "collapsed": false
+    }
+  ],
+  "links": []
+}

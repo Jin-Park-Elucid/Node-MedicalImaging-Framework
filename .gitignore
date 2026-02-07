@@ -1,0 +1,119 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyc
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# Data & Large Files
+data/
+checkpoints/
+outputs/
+results/
+visualization_output/
+examples/medical_segmentation_pipeline/data_synthetic_backup/
+*.pth
+*.pt
+*.h5
+*.hdf5
+*.npy
+*.npz
+
+# Model checkpoints and large files
+*.ckpt
+*.safetensors
+*.bin
+
+# Logs
+logs/
+*.log
+tensorboard/
+wandb/
+mlruns/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Environment files (may contain secrets)
+.env
+.env.local
+.envrc
+
+# Claude and session files
+.claude/
+session_archive/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+temp/
+tmp/
+
+# Large dataset files
+*.nii
+*.nii.gz
+*.dcm
+*.dicom
+
+# Workflows that might contain user-specific paths
+workflows/*.json
+
+# Specific project files to ignore
+medical_imaging_framework.egg-info/
+test_ports_debug.py
+setup_framework.py
+REAL_DATA_DOWNLOADED.md

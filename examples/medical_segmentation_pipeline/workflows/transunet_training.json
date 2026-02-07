@@ -1,0 +1,108 @@
+{
+  "name": "TransUNet Training",
+  "description": "Hybrid CNN-Transformer segmentation training",
+  "nodes": [
+    {
+      "type": "MedicalSegmentationLoader",
+      "name": "data_loader",
+      "config": {
+        "data_dir": "data/medical_segmentation",
+        "batch_size": "4",
+        "image_size": "224",
+        "num_workers": "4"
+      },
+      "position": {
+        "x": 50,
+        "y": 100
+      }
+    },
+    {
+      "type": "TransUNet",
+      "name": "transunet_model",
+      "config": {
+        "img_size": "224",
+        "in_channels": "1",
+        "out_channels": "2",
+        "base_channels": "64",
+        "embed_dim": "512",
+        "num_heads": "8",
+        "num_layers": "12"
+      },
+      "position": {
+        "x": 50,
+        "y": 250
+      }
+    },
+    {
+      "type": "LossFunction",
+      "name": "combined_loss",
+      "config": {
+        "loss_type": "combined",
+        "dice_weight": "0.5",
+        "ce_weight": "0.5"
+      },
+      "position": {
+        "x": 50,
+        "y": 400
+      }
+    },
+    {
+      "type": "Optimizer",
+      "name": "adamw_optimizer",
+      "config": {
+        "optimizer_type": "AdamW",
+        "learning_rate": "0.0001",
+        "weight_decay": "0.0001"
+      },
+      "position": {
+        "x": 300,
+        "y": 250
+      }
+    },
+    {
+      "type": "Trainer",
+      "name": "trainer",
+      "config": {
+        "epochs": "150",
+        "device": "cuda",
+        "mixed_precision": "true"
+      },
+      "position": {
+        "x": 550,
+        "y": 250
+      }
+    }
+  ],
+  "links": [
+    {
+      "source_node": "data_loader",
+      "source_port": "train_loader",
+      "target_node": "trainer",
+      "target_port": "dataloader"
+    },
+    {
+      "source_node": "transunet_model",
+      "source_port": "model",
+      "target_node": "trainer",
+      "target_port": "model"
+    },
+    {
+      "source_node": "combined_loss",
+      "source_port": "loss_fn",
+      "target_node": "trainer",
+      "target_port": "loss_fn"
+    },
+    {
+      "source_node": "transunet_model",
+      "source_port": "model",
+      "target_node": "adamw_optimizer",
+      "target_port": "model"
+    },
+    {
+      "source_node": "adamw_optimizer",
+      "source_port": "optimizer",
+      "target_node": "trainer",
+      "target_port": "optimizer"
+    }
+  ]
+}
