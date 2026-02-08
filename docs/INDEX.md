@@ -54,56 +54,83 @@ docs/
    - Simple examples
    - Creating custom nodes
 
-3. **[Environment Setup](getting-started/ENVIRONMENT_SETUP.md)** - Virtual environment guide
+3. **[Installation Guide](getting-started/INSTALLATION_GUIDE.md)** - Complete installation
+   - Automated and manual installation
+   - All fixes included
+   - Troubleshooting
+
+4. **[Environment Setup](getting-started/ENVIRONMENT_SETUP.md)** - Virtual environment guide
    - Automatic activation (direnv)
    - Manual activation methods
    - Troubleshooting
 
-4. **[Main Documentation](README.md)** - Complete framework docs
+5. **[Main Documentation](README.md)** - Complete framework docs
    - Full feature overview
    - Architecture details
    - API reference
 
 ### For GUI Users
 
-5. **[Visual GUI Complete](gui/VISUAL_GUI_COMPLETE.md)** - Full visual implementation
+6. **[GUI Launching Guide](gui/GUI_LAUNCHING_GUIDE.md)** ⚡ - **CRITICAL** launcher guide
+   - Generic vs custom launcher
+   - Loading workflows correctly
+   - Troubleshooting nodes not appearing
+
+7. **[Visual GUI Complete](gui/VISUAL_GUI_COMPLETE.md)** - Full visual implementation
    - All visual features
    - Implementation summary
    - Complete guide
 
-6. **[GUI Quick Reference](gui/VISUAL_GUI_QUICK_REFERENCE.md)** ⚡ - Quick reference card
+8. **[GUI Quick Reference](gui/VISUAL_GUI_QUICK_REFERENCE.md)** ⚡ - Quick reference card
    - Keyboard shortcuts
    - Mouse controls
    - Common actions
 
-7. **[GUI Launching Methods](gui/LAUNCHING_GUI_METHODS.md)** - Complete launch guide
+9. **[GUI Launching Methods](gui/LAUNCHING_GUI_METHODS.md)** - Complete launch guide
    - python -m vs script execution
    - Generic vs example-specific GUI
    - Remote GUI access (SSH X11)
 
 ### For Example Users
 
-8. **[Medical Segmentation Example](examples/medical-segmentation/README.md)** - Complete example
-   - Training pipeline
-   - Testing pipeline
-   - Dataset setup
+10. **[Medical Segmentation Example](examples/medical-segmentation/README.md)** - Complete example
+    - Training pipeline
+    - Testing pipeline
+    - Dataset setup
 
-9. **[Visual GUI Guide](examples/medical-segmentation/gui/VISUAL_GUI_GUIDE.md)** - Visual features
-   - How to use GUI with example
-   - Step-by-step tutorials
-   - Troubleshooting
+11. **[Visual GUI Guide](examples/medical-segmentation/gui/VISUAL_GUI_GUIDE.md)** - Visual features
+    - How to use GUI with example
+    - Step-by-step tutorials
+    - Troubleshooting
+
+### For Deployment
+
+12. **[Deployment Checklist](getting-started/DEPLOYMENT_CHECKLIST.md)** ⚡ - Step-by-step deployment
+    - Complete deployment guide
+    - Verification steps
+    - Common issues
+
+13. **[Deployment Quick Start](getting-started/README_DEPLOYMENT.md)** - Ready to deploy
+    - Quick deployment overview
+    - Success criteria
+    - Critical reminders
 
 ### For Contributors
 
-10. **[Contributing Guide](project/CONTRIBUTING.md)** - How to contribute
-   - Adding nodes
-   - Documentation standards
-   - Pull request process
+14. **[Contributing Guide](project/CONTRIBUTING.md)** - How to contribute
+    - Adding nodes
+    - Documentation standards
+    - Pull request process
 
-11. **[Project Status](project/PROJECT_STATUS.md)** - Project overview
+15. **[Project Status](project/PROJECT_STATUS.md)** - Project overview
     - What's included
     - Statistics
     - Future enhancements
+
+16. **[Fixes Applied](project/FIXES_APPLIED.md)** - Issue resolution log
+    - All bugs fixed
+    - Solutions applied
+    - Verification methods
 
 ---
 
@@ -156,11 +183,23 @@ docs/
 **See one-page reference**
 → [Quick Reference](getting-started/QUICK_REFERENCE.md)
 
+**Install on a new server**
+→ [Installation Guide](getting-started/INSTALLATION_GUIDE.md) | [Deployment Checklist](getting-started/DEPLOYMENT_CHECKLIST.md)
+
+**Deploy to production**
+→ [Deployment Quick Start](getting-started/README_DEPLOYMENT.md)
+
 **Use the visual GUI**
 → [Visual GUI Complete](gui/VISUAL_GUI_COMPLETE.md)
 
+**Launch GUI correctly** ⚡ **IMPORTANT**
+→ [GUI Launching Guide](gui/GUI_LAUNCHING_GUIDE.md)
+
 **Understand GUI launch methods**
 → [GUI Launching Methods](gui/LAUNCHING_GUI_METHODS.md)
+
+**Fix "nodes not appearing in GUI"**
+→ [GUI Launching Guide - Troubleshooting](gui/GUI_LAUNCHING_GUIDE.md#troubleshooting)
 
 **Run GUI remotely via SSH**
 → [Remote GUI Access](gui/LAUNCHING_GUI_METHODS.md#remote-gui-access-ssh-x11-forwarding)
@@ -183,6 +222,9 @@ docs/
 **Fix environment issues**
 → [Environment Setup - Troubleshooting](getting-started/ENVIRONMENT_SETUP.md#troubleshooting)
 
+**See what was fixed today**
+→ [Fixes Applied](project/FIXES_APPLIED.md)
+
 **Contribute to the project**
 → [Contributing Guide](project/CONTRIBUTING.md)
 
@@ -204,6 +246,12 @@ docs/
 | **QUICK_REFERENCE.md** | One-page reference | Quick lookup ⚡ |
 | **GETTING_STARTED.md** | Quick start guide | New users, tutorials |
 | **ENVIRONMENT_SETUP.md** | Environment details | Setup, troubleshooting |
+| **INSTALLATION_GUIDE.md** | Complete installation guide | New server deployment |
+| **DEPLOYMENT_CHECKLIST.md** | Step-by-step deployment | Server deployment |
+| **README_DEPLOYMENT.md** | Deployment quick start | Ready to deploy |
+| **SERVER_SETUP.md** | Server installation | Remote server setup |
+| **TROUBLESHOOTING_INSTALL.md** | Installation issues | Fixing problems |
+| **NEXT_STEPS.md** | What to do next | After installation |
 
 ### Project Info (docs/project/)
 
@@ -211,6 +259,8 @@ docs/
 |------|-------------|----------|
 | **CONTRIBUTING.md** | Contribution guide | Contributing code/docs |
 | **PROJECT_STATUS.md** | Project overview | Contributors, overview |
+| **FIXES_APPLIED.md** | All fixes applied | Issue resolution log |
+| **CIRCULAR_IMPORT_FIX.md** | Import fix details | Technical reference |
 
 ### GUI Documentation (docs/gui/)
 
@@ -219,6 +269,12 @@ docs/
 | **VISUAL_GUI_COMPLETE.md** | Complete visual implementation | Understanding GUI features |
 | **VISUAL_GUI_QUICK_REFERENCE.md** | Quick reference card | Quick lookup ⚡ |
 | **LAUNCHING_GUI_METHODS.md** | Launch methods & SSH guide | Running GUI locally/remotely |
+| **GUI_LAUNCHING_GUIDE.md** | Complete launcher guide | Critical for workflows ⚡ |
+| **SSH_X11_FORWARDING_GUIDE.md** | Remote GUI setup | X11 forwarding |
+| **CREATING_CONNECTIONS.md** | Node connections | Building workflows |
+| **EDITING_PARAMETERS.md** | Parameter editing | Node configuration |
+| **PORT_TYPES_GUIDE.md** | Port types explained | Understanding ports |
+| **TRAINING_VS_INFERENCE.md** | Workflow types | Training vs testing |
 
 ### Medical Segmentation Example (docs/examples/medical-segmentation/)
 
@@ -278,14 +334,17 @@ docs/
 
 ## 📊 Documentation Statistics
 
-- **Total Documentation Files**: 19
-- **Documentation Categories**: 5
+- **Total Documentation Files**: 40+
+- **Documentation Categories**: 8
 - **Quick Reference Pages**: 3
+- **Installation Guides**: 6
+- **GUI Guides**: 9
 - **Example Guides**: 9
+- **Project Documentation**: 5
 - **Code Examples**: 30+
-- **Total Documentation**: ~3,500+ lines
+- **Total Documentation**: ~7,000+ lines
 - **Last Updated**: February 7, 2026
-- **Last Reorganized**: January 31, 2026
+- **Last Reorganized**: February 7, 2026
 
 ---
 

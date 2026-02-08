@@ -26,8 +26,8 @@ print("Checking package installation...")
 try:
     import pkg_resources
     try:
-        version = pkg_resources.get_distribution('medical-imaging-framework').version
-        location = pkg_resources.get_distribution('medical-imaging-framework').location
+        version = pkg_resources.get_distribution('Node-MedicalImaging-Framework').version
+        location = pkg_resources.get_distribution('Node-MedicalImaging-Framework').location
         print(f"✅ Package installed: version {version}")
         print(f"   Location: {location}")
     except pkg_resources.DistributionNotFound:
@@ -85,19 +85,20 @@ print("━━━━━━━━━━━━━━━━━━━━━━━━�
 print("Step 3: Check node registration")
 print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 try:
-    nodes = NodeRegistry.list_nodes()
+    nodes = NodeRegistry.get_all_nodes()
     print(f"✅ {len(nodes)} nodes registered")
     print()
     print("Registered nodes by category:")
-    by_category = {}
-    for node_name in nodes:
-        category = node_name.split('Node')[0] if 'Node' in node_name else node_name
-        by_category.setdefault('unknown', []).append(node_name)
-
-    for category, node_list in sorted(by_category.items()):
-        print(f"  {category}: {len(node_list)} nodes")
+    categories = NodeRegistry.get_categories()
+    for category in sorted(categories):
+        node_names = NodeRegistry.get_nodes_by_category(category)
+        print(f"  {category}: {len(node_names)} nodes")
+        for node_name in sorted(node_names):
+            print(f"    - {node_name}")
 except Exception as e:
     print(f"❌ Cannot list nodes: {e}")
+    import traceback
+    traceback.print_exc()
     sys.exit(1)
 print()
 
