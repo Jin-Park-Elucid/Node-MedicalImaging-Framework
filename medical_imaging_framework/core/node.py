@@ -226,8 +226,39 @@ class BaseNode(ABC):
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize node to dictionary."""
+        # Find the registered name for this node class
+        # This is important because the class name might be different from the registered name
+        # e.g., class "AVTE2DLoaderNode" is registered as "AVTE2DLoader"
+        node_type = self.__class__.__name__
+
+        # Look up registered name in NodeRegistry
+        try:
+            from .registry import NodeRegistry
+            all_nodes = NodeRegistry.get_all_nodes()
+
+            # get_all_nodes() returns: {registered_name: {class: ..., category: ..., ...}}
+            for registered_name, node_info in all_nodes.items():
+                try:
+                    # Safely check if this is the right node class
+                    if hasattr(node_info, 'get'):
+                        node_class = node_info.get('class')
+                    elif hasattr(node_info, '__getitem__'):
+                        node_class = node_info['class']
+                    else:
+                        continue
+
+                    if node_class == self.__class__:
+                        node_type = registered_name
+                        break
+                except (TypeError, KeyError, AttributeError):
+                    # Skip entries that don't have the expected structure
+                    continue
+        except Exception:
+            # If anything goes wrong, fall back to class name
+            pass
+
         return {
-            'type': self.__class__.__name__,
+            'type': node_type,
             'name': self.name,
             'position': self.position,
             'config': self.config,

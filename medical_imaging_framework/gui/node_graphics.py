@@ -427,16 +427,23 @@ class PortGraphicsItem(QGraphicsEllipseItem):
 
     def _create_connection(self, source_port, target_port):
         """Create a connection between source and target ports."""
+        print(f"\n[DEBUG] _create_connection called:")
+        print(f"  Source: {source_port.parentItem().node.name}.{source_port.port_name} ({source_port.port.data_type.value})")
+        print(f"  Target: {target_port.parentItem().node.name}.{target_port.port_name} ({target_port.port.data_type.value})")
+
         # Check if connection already exists
         for conn in source_port.connections:
             if (conn.source_port == source_port and conn.target_port == target_port) or \
                (conn.source_port == target_port and conn.target_port == source_port):
-                print(f"Connection already exists between {source_port.port_name} and {target_port.port_name}")
+                print(f"  → Connection already exists")
                 return
 
-        # Check if data types are compatible
-        if source_port.port.data_type != target_port.port.data_type:
-            print(f"Cannot connect: incompatible types {source_port.port.data_type} -> {target_port.port.data_type}")
+        # Check if data types are compatible (allow ANY to match with anything)
+        from ..core.node import DataType
+        if (source_port.port.data_type != target_port.port.data_type and
+            source_port.port.data_type != DataType.ANY and
+            target_port.port.data_type != DataType.ANY):
+            print(f"  → Cannot connect: incompatible types {source_port.port.data_type.value} -> {target_port.port.data_type.value}")
             from PyQt5.QtWidgets import QMessageBox
             QMessageBox.warning(
                 None,
@@ -454,27 +461,52 @@ class PortGraphicsItem(QGraphicsEllipseItem):
         target_node = target_port.parentItem().node
 
         try:
-            # Connect in the workflow
-            from ..core import Link
-            link = Link(
-                source=source_node.outputs[source_port.port_name],
-                target=target_node.inputs[target_port.port_name]
-            )
-
-            # Store link reference (if workflow/editor needs it)
+            # Get the graph from the editor to properly register the connection
+            print(f"  → Looking for editor...")
+            editor = None
             if hasattr(self.scene(), 'editor'):
-                if not hasattr(self.scene().editor, 'workflow_links'):
-                    self.scene().editor.workflow_links = []
-                self.scene().editor.workflow_links.append(link)
+                editor = self.scene().editor
+                print(f"  → Found editor via self.scene().editor")
+            elif hasattr(self.scene(), 'parent') and hasattr(self.scene().parent(), 'editor'):
+                editor = self.scene().parent().editor
+                print(f"  → Found editor via self.scene().parent().editor")
+            else:
+                print(f"  → WARNING: Could not find editor!")
 
-            print(f"Connected: {source_node.name}.{source_port.port_name} -> {target_node.name}.{target_port.port_name}")
+            if editor and hasattr(editor, 'graph'):
+                print(f"  → Calling editor.graph.connect()...")
+                # Use graph.connect() to properly add link to graph.links
+                # This ensures the connection is saved when workflow is saved
+                link = editor.graph.connect(
+                    source_node.name,
+                    source_port.port_name,
+                    target_node.name,
+                    target_port.port_name
+                )
+                print(f"  ✓ Connected: {source_node.name}.{source_port.port_name} -> {target_node.name}.{target_port.port_name}")
+                print(f"  ✓ Graph now has {len(editor.graph.links)} total links")
+            else:
+                # Fallback if graph not found (shouldn't normally happen)
+                print(f"  ⚠ WARNING: Could not find graph, creating connection without registering")
+                from ..core import Link
+                link = Link(
+                    source=source_node.outputs[source_port.port_name],
+                    target=target_node.inputs[target_port.port_name]
+                )
 
         except Exception as e:
-            print(f"Error creating connection: {e}")
+            print(f"  ✗ Error creating connection: {e}")
             import traceback
             traceback.print_exc()
             # Remove visual connection if logical connection failed
             self.scene().removeItem(connection)
+            return
+
+        # Track connections on ports for visual updates
+        source_port.connections.append(connection)
+        target_port.connections.append(connection)
+        connection.source_port = source_port
+        connection.target_port = target_port
 
     def get_scene_center(self):
         """Get the center position in scene coordinates."""

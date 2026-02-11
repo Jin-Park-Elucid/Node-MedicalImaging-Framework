@@ -36,6 +36,9 @@ class NodeGraphEditor(QMainWindow):
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
 
+        # Set editor reference on scene so nodes can access the graph
+        self.scene.editor = self
+
         # Track graphics items
         self.node_graphics = {}  # node_name -> NodeGraphicsItem
         self.connection_graphics = []  # List of ConnectionGraphicsItem
