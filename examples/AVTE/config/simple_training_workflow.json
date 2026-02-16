@@ -1,0 +1,24 @@
+{
+  "name": "AVTE 2D Simple Test",
+  "nodes": [
+    {
+      "type": "AVTE2DLoader",
+      "name": "avte_dataloader",
+      "position": [100, 200],
+      "config": {
+        "data_dir": "/home/jin.park/Code_Hendrix/Data/AVTE/Dataset006_model_9_4/2D_data",
+        "batch_size": "8",
+        "train_ratio": "0.8",
+        "val_ratio": "0.1",
+        "random_seed": "42",
+        "num_workers": "4",
+        "shuffle_train": "True",
+        "pin_memory": "True",
+        "load_to_memory": "False"
+      },
+      "is_composite": false,
+      "collapsed": false
+    }
+  ],
+  "links": []
+}

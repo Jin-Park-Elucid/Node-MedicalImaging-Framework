@@ -1,0 +1,97 @@
+{
+  "name": "New Workflow",
+  "nodes": [
+    {
+      "type": "AVTE2DLoader",
+      "name": "AVTE2DLoader_0",
+      "position": [
+        -156.1308718615676,
+        -50.64690166855891
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "AVTE2DLoader",
+      "name": "AVTE2DLoader_1",
+      "position": [
+        -118.70011023893005,
+        -193.40069711712184
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "UNet2D",
+      "name": "UNet2D_2",
+      "position": [
+        -122.01457287506574,
+        -83.54669400790283
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "LossFunction",
+      "name": "LossFunction_3",
+      "position": [
+        -122.66147454362464,
+        43.89293469820218
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "Optimizer",
+      "name": "Optimizer_4",
+      "position": [
+        -131.71809790344935,
+        159.04143170168794
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    },
+    {
+      "type": "Trainer",
+      "name": "Trainer_5",
+      "position": [
+        164.56286629653084,
+        -51.84851224851631
+      ],
+      "config": {},
+      "is_composite": false,
+      "collapsed": false
+    }
+  ],
+  "links": [
+    {
+      "source_node": "AVTE2DLoader_1",
+      "source_port": "train_loader",
+      "target_node": "Trainer_5",
+      "target_port": "dataloader"
+    },
+    {
+      "source_node": "UNet2D_2",
+      "source_port": "model",
+      "target_node": "Trainer_5",
+      "target_port": "model"
+    },
+    {
+      "source_node": "LossFunction_3",
+      "source_port": "loss_fn",
+      "target_node": "Trainer_5",
+      "target_port": "loss_fn"
+    },
+    {
+      "source_node": "Optimizer_4",
+      "source_port": "optimizer",
+      "target_node": "Trainer_5",
+      "target_port": "optimizer"
+    }
+  ]
+}
